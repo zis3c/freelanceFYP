@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <h1 class="text-3xl font-bold text-gray-900">Welcome back, {{ user.first_name|default:user.username }}!</h1>
+
+    <div class="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <!-- Recent Assessment -->
+        <div class="bg-white overflow-hidden shadow rounded-lg">
+            <div class="p-5">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 bg-primary-500 rounded-md p-3">
+                        <!-- Icon -->
+                        <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                        </svg>
+                    </div>
+                    <div class="ml-5 w-0 flex-1">
+                        <dl>
+                            <dt class="text-sm font-medium text-gray-500 truncate">Recent Assessment</dt>
+                            <dd>
+                                <div class="text-lg font-medium text-gray-900">{{ assessment_status }}</div>
+                                {% if top_trait %}
+                                <div class="text-sm text-primary-600 font-medium">Top Trait: {{ top_trait }}</div>
+                                {% endif %}
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-gray-50 px-5 py-3">
+                <div class="text-sm">
+                    {% if assessment and assessment.completed_at %}
+                    <a href="{% url 'assessment_results' %}"
+                        class="font-medium text-primary-700 hover:text-primary-900">View Results</a>
+                    {% elif assessment %}
+                    <a href="{% url 'take_assessment' %}"
+                        class="font-medium text-primary-700 hover:text-primary-900">Continue Assessment</a>
+                    {% else %}
+                    <a href="{% url 'assessment_home' %}"
+                        class="font-medium text-primary-700 hover:text-primary-900">Start Assessment</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Saved Careers -->
+        <div class="bg-white overflow-hidden shadow rounded-lg">
+            <div class="p-5">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 bg-secondary-500 rounded-md p-3">
+                        <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                        </svg>
+                    </div>
+                    <div class="ml-5 w-0 flex-1">
+                        <dl>
+                            <dt class="text-sm font-medium text-gray-500 truncate">Saved Careers</dt>
+                            <dd>
+                                <div class="text-lg font-medium text-gray-900">{{ saved_count }} Saved</div>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-gray-50 px-5 py-3">
+                <div class="text-sm">
+                    <a href="/dashboard/saved/" class="font-medium text-primary-700 hover:text-primary-900">View all</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Status -->
+        <div class="bg-white overflow-hidden shadow rounded-lg">
+            <div class="p-5">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 bg-purple-500 rounded-md p-3">
+                        <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                    </div>
+                    <div class="ml-5 w-0 flex-1">
+                        <dl>
+                            <dt class="text-sm font-medium text-gray-500 truncate">Profile Status</dt>
+                            <dd>
+                                <div class="text-lg font-medium text-gray-900">
+                                    {% if is_profile_complete %}
+                                    <span class="text-green-600">Active</span>
+                                    {% else %}
+                                    <span class="text-yellow-600">Incomplete</span>
+                                    {% endif %}
+                                </div>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-gray-50 px-5 py-3">
+                <div class="text-sm">
+                    <a href="{% url 'profile_setup' %}" class="font-medium text-primary-700 hover:text-primary-900">
+                        {% if is_profile_complete %}
+                        Update profile
+                        {% else %}
+                        Complete profile
+                        {% endif %}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

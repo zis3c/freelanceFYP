@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div class="md:flex md:items-center md:justify-between mb-8">
+        <div class="flex-1 min-w-0">
+            <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">Saved Careers</h2>
+        </div>
+        <div class="mt-4 flex md:mt-0 md:ml-4">
+            <a href="{% url 'dashboard' %}" class="btn btn-secondary text-sm">Back to Dashboard</a>
+        </div>
+    </div>
+
+    <div class="bg-white shadow overflow-hidden sm:rounded-md">
+        {% if saved_careers %}
+        <form action="{% url 'compare_careers' %}" method="get" id="compareForm">
+            <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
+                <!-- Button disabled by default until 2 selected -->
+                <button type="submit" disabled id="compareBtn"
+                    class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed">
+                    Compare Selected (2)
+                </button>
+            </div>
+            <ul class="divide-y divide-gray-200">
+                {% for item in saved_careers %}
+                <li class="flex items-center px-4 py-4 sm:px-6 hover:bg-gray-50">
+                    <div class="mr-4">
+                        <input type="checkbox" name="c1" value="{{ item.career.pk }}"
+                            class="career-select h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <a href="{% url 'career_detail' item.career.pk %}" class="block focus:outline-none">
+                            <div class="flex items-center justify-between">
+                                <p class="text-sm font-medium text-primary-600 truncate">{{ item.career.title }}</p>
+                                <div class="ml-2 flex-shrink-0 flex">
+                                    <p
+                                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                        {{ item.career.industry.name }}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="mt-2 sm:flex sm:justify-between">
+                                <div class="sm:flex">
+                                    <p class="flex items-center text-sm text-gray-500">
+                                        <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                        Saved on {{ item.saved_at|date:"M d, Y" }}
+                                    </p>
+                                </div>
+                                <div class="mt-2 flex items-center text-sm text-gray-500 sm:mt-0">
+                                    <p>View Details &rarr;</p>
+                                </div>
+                            </div>
+                    </div>
+                    </a>
+    </div>
+    </li>
+    {% endfor %}
+    </ul>
+    </form>
+
+    <script>
+        const checkboxes = document.querySelectorAll('.career-select');
+        const compareBtn = document.getElementById('compareBtn');
+
+        checkboxes.forEach(cb => {
+            cb.addEventListener('change', () => {
+                const checked = document.querySelectorAll('.career-select:checked');
+
+                // Enable button only if exactly 2 are selected
+                compareBtn.disabled = checked.length !== 2;
+
+                // Limit selection to 2 max
+                if (checked.length >= 2) {
+                    checkboxes.forEach(box => {
+                        if (!box.checked) box.disabled = true;
+                    });
+                } else {
+                    checkboxes.forEach(box => {
+                        box.disabled = false;
+                    });
+                }
+
+                // Hack to ensure query params utilize unique keys (c1, c2) or array
+                // Since standard form submission will send ?c1=1&c1=2
+                // We modify the names dynamically or let the view handle a list.
+                // Let's modify names dynamically for the view expectation c1, c2
+                if (checked.length === 2) {
+                    checked[0].name = 'c1';
+                    checked[1].name = 'c2';
+                } else if (checked.length === 1) {
+                    checked[0].name = 'c1';
+                }
+            });
+        });
+    </script>
+    {% else %}
+    <!-- Empty State -->
+    <div class="px-4 py-12 text-center text-gray-500">
+        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+        </svg>
+        <h3 class="mt-2 text-sm font-medium text-gray-900">No saved careers</h3>
+        <p class="mt-1 text-sm text-gray-500">Get started by taking an assessment or exploring careers.</p>
+        <div class="mt-6">
+            <a href="{% url 'career_list' %}"
+                class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700">
+                Explore Careers
+            </a>
+        </div>
+    </div>
+    {% endif %}
+</div>
+</div>
+{% endblock %}

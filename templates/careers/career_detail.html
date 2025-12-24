@@ -1,0 +1,527 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <!-- Breadcrumb -->
+    <nav class="flex mb-8" aria-label="Breadcrumb">
+        <ol class="flex items-center space-x-4">
+            <li>
+                <div>
+                    <a href="{% url 'career_list' %}" class="text-gray-400 hover:text-gray-500">
+                        <svg class="flex-shrink-0 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                            fill="currentColor" aria-hidden="true">
+                            <path
+                                d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+                        </svg>
+                    </a>
+                </div>
+            </li>
+            <li>
+                <div class="flex items-center">
+                    <svg class="flex-shrink-0 h-5 w-5 text-gray-300" xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                        <path d="M5.555 17.776l8-16 .894.448-8 16-.894-.448z" />
+                    </svg>
+                    <a href="{% url 'career_list' %}"
+                        class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700">Careers</a>
+                </div>
+            </li>
+            <li>
+                <div class="flex items-center">
+                    <svg class="flex-shrink-0 h-5 w-5 text-gray-300" xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                        <path d="M5.555 17.776l8-16 .894.448-8 16-.894-.448z" />
+                    </svg>
+                    <span class="ml-4 text-sm font-medium text-gray-700" aria-current="page">{{ career.title }}</span>
+                </div>
+            </li>
+        </ol>
+    </nav>
+
+    <!-- Career Header -->
+    <div class="md:flex md:items-center md:justify-between mb-8">
+        <div class="flex-1 min-w-0">
+            <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
+                {{ career.title }}
+            </h2>
+            <div class="mt-1 flex flex-col sm:flex-row sm:flex-wrap sm:mt-0 sm:space-x-6">
+                <div class="mt-2 flex items-center text-sm text-gray-500">
+                    <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                    </svg>
+                    {{ career.industry.name }}
+                </div>
+                <div class="mt-2 flex items-center text-sm text-gray-500">
+                    <svg class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    {{ career.salary_range }}
+                </div>
+            </div>
+        </div>
+        <div class="mt-4 flex md:mt-0 md:ml-4">
+            <form method="post" action="{% url 'toggle_save_career' career.pk %}">
+                {% csrf_token %}
+                {% if is_saved %}
+                <button type="submit"
+                    class="ml-3 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none">
+                    Saved
+                    <svg class="ml-2 -mr-1 h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z" />
+                    </svg>
+                </button>
+                {% else %}
+                <button type="submit"
+                    class="ml-3 inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none">
+                    Save Career
+                </button>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+
+    <!-- Details Grid -->
+    <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+        <div class="px-4 py-5 sm:px-6">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">Career Information</h3>
+            <p class="mt-1 max-w-2xl text-sm text-gray-500">Detailed breakdown and requirements.</p>
+        </div>
+        <div class="border-t border-gray-200">
+            <dl>
+                <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-sm font-medium text-gray-500">Description</dt>
+                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ career.description }}</dd>
+                </div>
+                <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-sm font-medium text-gray-500">Matching Personality</dt>
+                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                        <span
+                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800">
+                            {{ career.get_primary_trait_display }}
+                        </span>
+                    </dd>
+                </div>
+                <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-sm font-medium text-gray-500">Education Required</dt>
+                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ career.education_required }}</dd>
+                </div>
+                <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-sm font-medium text-gray-500">Job Outlook</dt>
+                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ career.outlook }}</dd>
+                </div>
+                <!-- Skills -->
+                <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-sm font-medium text-gray-500">Key Skills</dt>
+                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                        <div class="flex flex-wrap gap-2">
+                            {% for skill in career.skills.all %}
+                            <span
+                                class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-gray-100 text-gray-800">
+                                {{ skill.name }}
+                            </span>
+                            {% empty %}
+                            <span class="text-gray-500 italic">No specific skills listed.</span>
+                            {% endfor %}
+                        </div>
+                    </dd>
+                </div>
+            </dl>
+        </div>
+    </div>
+
+
+    <!-- Compatibility Calculator -->
+    <div class="mt-8 bg-white shadow overflow-hidden sm:rounded-lg" x-data="{
+        percentage: 0,
+        circumference: 2 * Math.PI * 40,
+        init() {
+            // Add small delay to ensure DOM is ready for initial check
+            setTimeout(() => this.calculate(), 100);
+        },
+        calculate() {
+            let total = 2; // Trait + Edu
+            let checked = 0;
+            
+            const traitInput = document.getElementById('trait_match');
+            if (traitInput && traitInput.checked) checked++;
+            
+            const eduInput = document.getElementById('edu_match');
+            if (eduInput && eduInput.checked) checked++;
+            
+            const skills = document.querySelectorAll('.skill-check');
+            if (skills.length > 0) {
+                total += skills.length;
+                skills.forEach(el => {
+                    if (el.checked) checked++;
+                });
+            }
+            
+            this.percentage = Math.round((checked / total) * 100);
+        }
+    }" x-init="init()">
+        <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">Compatibility Calculator</h3>
+            <p class="mt-1 max-w-2xl text-sm text-gray-500">Check the boxes to see how well you match this career.</p>
+        </div>
+
+        <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <!-- Checklist -->
+            <div class="space-y-4">
+                <!-- Personality -->
+                <div class="relative flex items-start">
+                    <div class="flex items-center h-5">
+                        <input id="trait_match" type="checkbox" disabled
+                            class="focus:ring-primary-500 h-4 w-4 text-primary-600 border-gray-300 rounded disabled:opacity-50 disabled:bg-gray-100"
+                            {% if user_trait == career.primary_trait %}checked{% endif %}>
+                    </div>
+                    <div class="ml-3 text-sm">
+                        <label for="trait_match" class="font-medium text-gray-700">Personality Fit</label>
+                        <p class="text-gray-500">Matches {{ career.get_primary_trait_display }}</p>
+                        {% if not user_trait %}
+                        <p class="text-xs text-primary-600 mt-1"><a href="{% url 'assessment_home' %}"
+                                class="hover:underline">Take assessment</a> to check automatically</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Education -->
+                <div class="relative flex items-start">
+                    <div class="flex items-center h-5">
+                        <input id="edu_match" type="checkbox" @change="calculate()"
+                            class="focus:ring-primary-500 h-4 w-4 text-primary-600 border-gray-300 rounded cursor-pointer">
+                    </div>
+                    <div class="ml-3 text-sm">
+                        <label for="edu_match" class="font-medium text-gray-700 cursor-pointer">Education
+                            Requirement</label>
+                        <p class="text-gray-500">{{ career.education_required }}</p>
+                    </div>
+                </div>
+
+                <!-- Skills -->
+                {% if career.skills.exists %}
+                <div class="mt-4 border-t border-gray-100 pt-4">
+                    <span class="block text-sm font-medium text-gray-700 mb-3">Key Skills</span>
+                    <div class="space-y-3">
+                        {% for skill in career.skills.all %}
+                        <div class="relative flex items-start">
+                            <div class="flex items-center h-5">
+                                <input type="checkbox" value="{{ skill.id }}" @change="calculate()"
+                                    class="skill-check focus:ring-primary-500 h-4 w-4 text-primary-600 border-gray-300 rounded cursor-pointer">
+                            </div>
+                            <div class="ml-3 text-sm">
+                                <label class="font-medium text-gray-700 cursor-pointer">{{ skill.name }}</label>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Gauge -->
+            <div class="flex flex-col items-center justify-center p-4 bg-gray-50 rounded-lg">
+                <div class="relative w-40 h-40">
+                    <svg class="w-full h-full" viewBox="0 0 100 100">
+                        <!-- Background circle -->
+                        <circle class="text-gray-200 stroke-current" stroke-width="8" cx="50" cy="50" r="40"
+                            fill="transparent"></circle>
+                        <!-- Progress circle -->
+                        <circle class="text-primary-600 progress-ring__circle stroke-current" stroke-width="8"
+                            stroke-linecap="round" cx="50" cy="50" r="40" fill="transparent"
+                            :stroke-dasharray="circumference"
+                            :stroke-dashoffset="circumference - (percentage / 100) * circumference"
+                            style="transition: stroke-dashoffset 0.8s ease-in-out; transform: rotate(-90deg); transform-origin: 50% 50%;">
+                        </circle>
+                    </svg>
+                    <!-- Percentage Text -->
+                    <div class="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center">
+                        <span class="text-3xl font-bold text-gray-900" x-text="percentage + '%'">0%</span>
+                        <span class="text-xs text-gray-500 uppercase tracking-widest mt-1">Match</span>
+                    </div>
+                </div>
+                <p class="mt-4 text-lg font-bold transition-colors duration-300" :class="{
+                    'text-red-500': percentage < 50,
+                    'text-yellow-500': percentage >= 50 && percentage < 80,
+                    'text-green-600': percentage >= 80
+                }"
+                    x-text="percentage >= 80 ? 'Excellent Fit!' : (percentage >= 50 ? 'Good Potential' : 'Needs Development')">
+                </p>
+                <p class="text-xs text-center text-gray-400 mt-2">Based on checked items</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reviews Section -->
+    <div class="mt-8 bg-white shadow overflow-hidden sm:rounded-lg">
+        <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+            <div class="md:flex md:items-center md:justify-between">
+                <div class="flex-1">
+                    <h3 class="text-lg leading-6 font-medium text-gray-900">Career Reviews</h3>
+                    {% if total_reviews > 0 %}
+                    <div class="mt-2 flex items-center">
+                        <div class="flex items-center">
+                            {% for i in "12345" %}
+                            <svg class="h-5 w-5 {% if forloop.counter <= avg_rating %}text-yellow-400{% else %}text-gray-300{% endif %}"
+                                fill="currentColor" viewBox="0 0 20 20">
+                                <path
+                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                            </svg>
+                            {% endfor %}
+                            <span class="ml-2 text-sm text-gray-700">{{ avg_rating }} out of 5</span>
+                        </div>
+                        <span class="ml-4 text-sm text-gray-500">{{ total_reviews }} review{{ total_reviews|pluralize
+                            }}</span>
+                    </div>
+                    {% else %}
+                    <p class="mt-1 text-sm text-gray-500">Be the first to review this career!</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter Tabs -->
+        {% if total_reviews > 0 %}
+        <div class="bg-gray-50 px-4 py-3 border-b border-gray-200">
+            <div class="flex space-x-4">
+                <a href="?filter=recent"
+                    class="px-3 py-2 text-sm font-medium rounded-md {% if filter_by == 'recent' %}bg-primary-100 text-primary-700{% else %}text-gray-500 hover:text-gray-700{% endif %}">
+                    Most Recent
+                </a>
+                <a href="?filter=highest"
+                    class="px-3 py-2 text-sm font-medium rounded-md {% if filter_by == 'highest' %}bg-primary-100 text-primary-700{% else %}text-gray-500 hover:text-gray-700{% endif %}">
+                    Highest Rated
+                </a>
+                <a href="?filter=helpful"
+                    class="px-3 py-2 text-sm font-medium rounded-md {% if filter_by == 'helpful' %}bg-primary-100 text-primary-700{% else %}text-gray-500 hover:text-gray-700{% endif %}">
+                    Most Helpful
+                </a>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Review Form -->
+        {% if user.is_authenticated %}
+        {% if review_form %}
+        <div class="px-4 py-5 sm:px-6 bg-gray-50 border-b border-gray-200">
+            <h4 class="text-md font-medium text-gray-900 mb-4">Write a Review</h4>
+            <form method="post" action="{% url 'submit_review' career.pk %}" id="reviewForm">
+                {% csrf_token %}
+
+                <!-- Star Rating -->
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Your Rating</label>
+                    <div class="flex items-center space-x-1" id="starRating">
+                        {% for i in "12345" %}
+                        <input type="radio" name="rating" value="{{ forloop.counter }}" id="star{{ forloop.counter }}"
+                            class="sr-only" required>
+                        <label for="star{{ forloop.counter }}" class="cursor-pointer star-label">
+                            <svg class="h-8 w-8 text-gray-300 hover:text-yellow-400 transition" fill="currentColor"
+                                viewBox="0 0 20 20">
+                                <path
+                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                            </svg>
+                        </label>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Review Text -->
+                <div class="mb-4">
+                    {{ review_form.review_text.label_tag }}
+                    {{ review_form.review_text }}
+                    <p class="mt-1 text-xs text-gray-500">{{ review_form.review_text.help_text }}</p>
+                </div>
+
+                <!-- Experience Level -->
+                <div class="mb-4">
+                    {{ review_form.experience_level.label_tag }}
+                    {{ review_form.experience_level }}
+                </div>
+
+                <button type="submit"
+                    class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                    Submit Review
+                </button>
+            </form>
+        </div>
+        {% elif user_review %}
+        <div class="px-4 py-3 bg-blue-50 border-b border-blue-200">
+            <p class="text-sm text-blue-800">You've already reviewed this career. Thank you for your feedback!</p>
+        </div>
+        {% endif %}
+        {% else %}
+        <div class="px-4 py-3 bg-gray-50 border-b border-gray-200">
+            <p class="text-sm text-gray-600">
+                <a href="{% url 'login' %}" class="font-medium text-primary-600 hover:text-primary-500">Sign in</a> to
+                leave a review
+            </p>
+        </div>
+        {% endif %}
+
+        <!-- Reviews List -->
+        <div class="divide-y divide-gray-200">
+            {% for review in reviews %}
+            <div class="px-4 py-5 sm:px-6">
+                <div class="flex items-start">
+                    <div class="flex-shrink-0">
+                        <div class="h-10 w-10 rounded-full bg-primary-100 flex items-center justify-center">
+                            <span class="text-primary-700 font-medium text-sm">{{ review.user.username|slice:":1"|upper
+                                }}</span>
+                        </div>
+                    </div>
+                    <div class="ml-4 flex-1">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h4 class="text-sm font-medium text-gray-900">{{ review.user.username }}</h4>
+                                <p class="text-xs text-gray-500">{{ review.get_experience_level_display }} • {{
+                                    review.created_at|date:"M d, Y" }}</p>
+                            </div>
+                            <div class="flex items-center">
+                                {% for i in "12345" %}
+                                <svg class="h-4 w-4 {% if forloop.counter <= review.rating %}text-yellow-400{% else %}text-gray-300{% endif %}"
+                                    fill="currentColor" viewBox="0 0 20 20">
+                                    <path
+                                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                </svg>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <p class="mt-2 text-sm text-gray-700">{{ review.review_text }}</p>
+
+                        <!-- Voting Buttons -->
+                        {% if user.is_authenticated and review.user != user %}
+                        <div class="mt-3 flex items-center space-x-4">
+                            <button
+                                class="vote-btn flex items-center text-sm text-gray-500 hover:text-gray-700 transition"
+                                data-review-id="{{ review.id }}" data-vote-type="HELPFUL"
+                                data-current-vote="{% if review.id in user_helpful_votes %}HELPFUL{% endif %}">
+                                <svg class="h-5 w-5 mr-1 {% if review.id in user_helpful_votes %}text-green-600{% endif %}"
+                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
+                                </svg>
+                                <span class="helpful-count">{{ review.helpful_count }}</span>
+                            </button>
+                            <span class="text-gray-400">•</span>
+                            <button
+                                class="vote-btn flex items-center text-sm text-gray-500 hover:text-gray-700 transition"
+                                data-review-id="{{ review.id }}" data-vote-type="NOT_HELPFUL"
+                                data-current-vote="{% if review.id in user_not_helpful_votes %}NOT_HELPFUL{% endif %}">
+                                <svg class="h-5 w-5 mr-1 {% if review.id in user_not_helpful_votes %}text-red-600{% endif %}"
+                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M10 14H5.236a2 2 0 01-1.789-2.894l3.5-7A2 2 0 018.736 3h4.018a2 2 0 01.485.06l3.76.94m-7 10v5a2 2 0 002 2h.096c.5 0 .905-.405.905-.904 0-.715.211-1.413.608-2.008L17 13V4m-7 10h2m5-10h2a2 2 0 012 2v6a2 2 0 01-2 2h-2.5" />
+                                </svg>
+                                <span class="not-helpful-count">{{ review.not_helpful_count }}</span>
+                            </button>
+                        </div>
+                        {% elif user.is_authenticated %}
+                        <p class="mt-3 text-xs text-gray-500 italic">This is your review</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            {% if not review_form and user.is_authenticated %}
+            <div class="px-4 py-8 text-center">
+                <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+                </svg>
+                <p class="mt-2 text-sm text-gray-500">No reviews yet for this career</p>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<script>
+    // Star Rating Selection
+    document.addEventListener('DOMContentLoaded', function () {
+        const starLabels = document.querySelectorAll('.star-label');
+        const starInputs = document.querySelectorAll('#starRating input[type="radio"]');
+
+        starLabels.forEach((label, index) => {
+            label.addEventListener('mouseenter', function () {
+                highlightStars(index + 1);
+            });
+
+            label.addEventListener('click', function () {
+                starInputs[index].checked = true;
+                highlightStars(index + 1, true);
+            });
+        });
+
+        document.getElementById('starRating')?.addEventListener('mouseleave', function () {
+            const checkedIndex = Array.from(starInputs).findIndex(input => input.checked);
+            if (checkedIndex >= 0) {
+                highlightStars(checkedIndex + 1, true);
+            } else {
+                highlightStars(0);
+            }
+        });
+
+        function highlightStars(count, permanent = false) {
+            starLabels.forEach((label, index) => {
+                const svg = label.querySelector('svg');
+                if (index < count) {
+                    svg.classList.remove('text-gray-300');
+                    svg.classList.add('text-yellow-400');
+                } else {
+                    svg.classList.remove('text-yellow-400');
+                    svg.classList.add('text-gray-300');
+                }
+            });
+        }
+
+        // Vote handling
+        const voteButtons = document.querySelectorAll('.vote-btn');
+        voteButtons.forEach(button => {
+            button.addEventListener('click', function (e) {
+                e.preventDefault();
+                const reviewId = this.dataset.reviewId;
+                const voteType = this.dataset.voteType;
+
+                fetch(`/careers/review/${reviewId}/vote/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                    },
+                    body: `vote_type=${voteType}`
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Update counts
+                            const container = this.closest('.flex.items-center.space-x-4');
+                            container.querySelector('.helpful-count').textContent = data.helpful_count;
+                            container.querySelector('.not-helpful-count').textContent = data.not_helpful_count;
+
+                            // Update button states
+                            const allButtons = container.querySelectorAll('.vote-btn');
+                            allButtons.forEach(btn => {
+                                const btnVoteType = btn.dataset.voteType;
+                                const svg = btn.querySelector('svg');
+
+                                if (data.action === 'removed') {
+                                    svg.classList.remove('text-green-600', 'text-red-600');
+                                } else if (btnVoteType === voteType) {
+                                    svg.classList.add(voteType === 'HELPFUL' ? 'text-green-600' : 'text-red-600');
+                                } else {
+                                    svg.classList.remove('text-green-600', 'text-red-600');
+                                }
+                            });
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+            });
+        });
+    });
+</script>
+{% endblock %}

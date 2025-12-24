@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Career Assessment Report</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 2cm;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12pt;
+            color: #333;
+        }
+        h1 {
+            color: #2563eb;
+            border-bottom: 2px solid #2563eb;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #1e40af;
+            margin-top: 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .info-box {
+            background-color: #f3f4f6;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #d1d5db;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #e5e7eb;
+            font-weight: bold;
+        }
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 10pt;
+            color: #6b7280;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>SkillMatch Hub - Career Assessment Report</h1>
+        <p><strong>{{ user.get_full_name|default:user.username }}</strong></p>
+        <p>Completed: {{ assessment.completed_at|date:"F d, Y" }}</p>
+    </div>
+
+    <div class="info-box">
+        <h2>Your Dominant Trait</h2>
+        <p style="font-size: 18pt; color: #2563eb; font-weight: bold;">{{ dominant_trait }}</p>
+    </div>
+
+    <h2>Trait Breakdown</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Trait</th>
+                <th>Score</th>
+                <th>Percentage</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for trait in trait_scores %}
+            <tr>
+                <td>{{ trait.label }}</td>
+                <td>{{ trait.score }}/10</td>
+                <td>{{ trait.percentage }}%</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Recommended Careers</h2>
+    {% if careers %}
+    <ul>
+        {% for career in careers %}
+        <li>
+            <strong>{{ career.title }}</strong> - {{ career.industry.name }}<br>
+            <em>{{ career.description|truncatewords:20 }}</em>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>No specific career recommendations at this time.</p>
+    {% endif %}
+
+    <div class="footer">
+        <p>SkillMatch Hub - Your Partner in Career Discovery</p>
+        <p>Generated on {{ assessment.completed_at|date:"F d, Y - h:i A" }}</p>
+    </div>
+</body>
+</html>

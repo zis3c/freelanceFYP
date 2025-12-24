@@ -1,0 +1,20 @@
+# Python stuff
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+
+# Django stuff
+db.sqlite3
+/staticfiles
+/media
+local_settings.py
+
+# Environment
+.env
+/venv
+/env
+
+# IDEs
+.vscode
+.idea

@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="md:flex md:items-center md:justify-between mb-8">
+        <div class="flex-1 min-w-0">
+            <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">Compare Careers</h2>
+        </div>
+        <div class="mt-4 flex md:mt-0 md:ml-4">
+            <a href="{% url 'saved_careers' %}" class="btn btn-secondary text-sm">Back to Saved</a>
+        </div>
+    </div>
+
+    {% if c1 and c2 %}
+    <div class="mt-8 flex flex-col">
+        <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                    <table class="min-w-full divide-y divide-gray-200 table-fixed">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/4">
+                                    Feature</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/3">
+                                    {{ c1.title }}</th>
+                                <th
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/3">
+                                    {{ c2.title }}</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Industry</td>
+                                <td class="px-6 py-4 text-sm text-gray-500">{{ c1.industry.name }}</td>
+                                <td class="px-6 py-4 text-sm text-gray-500">{{ c2.industry.name }}</td>
+                            </tr>
+                            <tr class="bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Personality
+                                </td>
+                                <td class="px-6 py-4 text-sm text-gray-500">{{ c1.get_primary_trait_display }}</td>
+                                <td class="px-6 py-4 text-sm text-gray-500">{{ c2.get_primary_trait_display }}</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Education</td>
+                                <td class="px-6 py-4 text-sm text-gray-500">{{ c1.education_required }}</td>
+                                <td class="px-6 py-4 text-sm text-gray-500">{{ c2.education_required }}</td>
+                            </tr>
+                            <tr class="bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Salary Range
+                                </td>
+                                <td class="px-6 py-4 text-sm text-gray-500">{{ c1.salary_range }}</td>
+                                <td class="px-6 py-4 text-sm text-gray-500">{{ c2.salary_range }}</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Overview</td>
+                                <td class="px-6 py-4 text-sm text-gray-500">{{ c1.description }}</td>
+                                <td class="px-6 py-4 text-sm text-gray-500">{{ c2.description }}</td>
+                            </tr>
+                            <tr class="bg-gray-50">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Skills</td>
+                                <td class="px-6 py-4 text-sm text-gray-500">
+                                    <div class="flex flex-wrap gap-2">
+                                        {% for s in c1.skills.all %}
+                                        <span class="bg-white border rounded px-2 py-0.5 text-xs">{{ s.name }}</span>
+                                        {% endfor %}
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-sm text-gray-500">
+                                    <div class="flex flex-wrap gap-2">
+                                        {% for s in c2.skills.all %}
+                                        <span class="bg-white border rounded px-2 py-0.5 text-xs">{{ s.name }}</span>
+                                        {% endfor %}
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="text-center py-12">
+        <p class="text-gray-500">Please select two careers to compare.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="text-center mb-12">
+        <h2 class="text-base font-semibold text-primary-600 tracking-wide uppercase">Results</h2>
+        <p class="mt-1 text-3xl font-extrabold text-gray-900 sm:text-4xl">Your Career Personality</p>
+
+        <!-- Simplified Structure -->
+        <h3 class="mt-8 text-2xl font-bold text-primary-600">
+            {{ dominant_trait }}
+        </h3>
+        <p class="mt-2 text-gray-500">This is your dominant trait based on the assessment.</p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+        <!-- Traits Chart -->
+        <div class="bg-white shadow rounded-lg p-6">
+            <h3 class="text-lg leading-6 font-medium text-gray-900 mb-6">Trait Breakdown</h3>
+            <div class="space-y-4">
+                {% for trait in trait_scores %}
+                <div>
+                    <div class="flex justify-between mb-1">
+                        <span class="text-sm font-medium text-gray-700 capitalize">{{ trait.label }}</span>
+                        <span class="text-sm font-medium text-gray-700">{{ trait.score }}/10</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                        <div class="bg-primary-600 h-2.5 rounded-full"
+                            style="width: {{ trait.percentage|floatformat:0 }}%;"></div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Recommended Careers -->
+        <div class="bg-white shadow rounded-lg p-6">
+            <h3 class="text-lg leading-6 font-medium text-gray-900 mb-6">Recommended Careers</h3>
+            {% if careers %}
+            <ul class="divide-y divide-gray-200">
+                {% for career in careers %}
+                <li class="py-4">
+                    <div class="flex space-x-3">
+                        <div class="flex-1 space-y-1">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-sm font-medium">{{ career.title }}</h3>
+                                <p class="text-sm text-gray-500">{{ career.industry.name }}</p>
+                            </div>
+                            <p class="text-sm text-gray-500 line-clamp-2">{{ career.description }}</p>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <a href="{% url 'career_detail' career.pk %}"
+                            class="text-primary-600 hover:text-primary-500 text-sm font-medium">View Details &rarr;</a>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+            <div class="mt-6 text-center">
+                <a href="{% url 'career_list' %}" class="btn btn-secondary text-sm">View All Careers</a>
+            </div>
+            {% else %}
+            <p class="text-gray-500 text-sm">No specific recommendations found. Try exploring all fields!</p>
+            {% endif %}
+            <!-- Action Buttons -->
+            <div class="mt-8 flex justify-center space-x-4">
+                <a href="{% url 'dashboard' %}"
+                    class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700">
+                    Go to Dashboard
+                </a>
+                <a href="{% url 'download_report' %}"
+                    class="inline-flex items-center px-6 py-3 border border-primary-600 text-base font-medium rounded-md shadow-sm text-primary-600 bg-white hover:bg-primary-50">
+                    <svg class="-ml-1 mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    Download PDF
+                </a>
+                <a href="{% url 'retake_assessment' %}"
+                    class="inline-flex items-center px-6 py-3 border border-gray-300 text-base font-medium rounded-md shadow-sm text-gray-700 bg-white hover:bg-gray-50">
+                    Retake Assessment
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

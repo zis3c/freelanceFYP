@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="bg-primary-800 py-16 lg:py-24">
+    <div class="max-w-7xl mx-auto text-center px-4 sm:px-6 lg:px-8">
+        <h1 class="text-4xl font-extrabold tracking-tight text-white sm:text-5xl md:text-6xl">About SkillMatch Hub</h1>
+        <p class="mt-6 max-w-2xl mx-auto text-xl text-primary-100">
+            Empowering Malaysian students to discover their perfect career path through data and psychology.
+        </p>
+    </div>
+</div>
+
+<!-- Content Section -->
+<div class="py-16 bg-white overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="lg:grid lg:grid-cols-2 lg:gap-8">
+            <div>
+                <h3 class="text-2xl font-bold text-gray-900 sm:text-3xl">Our Mission</h3>
+                <p class="mt-3 text-lg text-gray-500">
+                    We aim to tackle the growing issue of degree mismatch and underemployment among fresh graduates.
+                    By identifying natural inclinations early, we help students make informed decisions before investing
+                    in their education.
+                </p>
+
+                <h3 class="mt-10 text-2xl font-bold text-gray-900 sm:text-3xl">How It Works</h3>
+                <dl class="mt-4 space-y-6">
+                    <div class="relative">
+                        <dt>
+                            <div
+                                class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-primary-500 text-white">
+                                <span class="font-bold text-lg">1</span>
+                            </div>
+                            <p class="ml-16 text-lg leading-6 font-medium text-gray-900">Assess</p>
+                        </dt>
+                        <dd class="mt-2 ml-16 text-base text-gray-500">
+                            Take our comprehensive assessment covering academic interests, skills, and situational
+                            judgment.
+                        </dd>
+                    </div>
+
+                    <div class="relative">
+                        <dt>
+                            <div
+                                class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-primary-500 text-white">
+                                <span class="font-bold text-lg">2</span>
+                            </div>
+                            <p class="ml-16 text-lg leading-6 font-medium text-gray-900">Analyze</p>
+                        </dt>
+                        <dd class="mt-2 ml-16 text-base text-gray-500">
+                            Our engine maps your results to 5 key personality traits and matches them with suitable
+                            industries.
+                        </dd>
+                    </div>
+
+                    <div class="relative">
+                        <dt>
+                            <div
+                                class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-primary-500 text-white">
+                                <span class="font-bold text-lg">3</span>
+                            </div>
+                            <p class="ml-16 text-lg leading-6 font-medium text-gray-900">Guide</p>
+                        </dt>
+                        <dd class="mt-2 ml-16 text-base text-gray-500">
+                            Explore detailed career profiles, save your favorites, and compare them side-by-side to make
+                            the best choice.
+                        </dd>
+                    </div>
+                </dl>
+            </div>
+
+            <div class="mt-12 lg:mt-0 relative">
+                <div class="bg-gray-50 rounded-lg shadow-lg p-8 h-full flex flex-col justify-center">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-6">Contact Us</h3>
+                    <p class="text-gray-600 mb-4">Have questions or feedback? We'd love to hear from you.</p>
+                    <div class="flex items-center text-gray-600 mb-4">
+                        <svg class="h-6 w-6 mr-3 text-primary-600" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                        <span>support@skillmatchhub.my</span>
+                    </div>
+                    <div class="flex items-center text-gray-600">
+                        <svg class="h-6 w-6 mr-3 text-primary-600" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                        <span>Kuala Lumpur, Malaysia</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

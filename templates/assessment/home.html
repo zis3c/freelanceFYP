@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+        <div class="px-4 py-5 sm:px-6">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">Career Assessment</h3>
+            <p class="mt-1 max-w-2xl text-sm text-gray-500">Discover your strengths and interests.</p>
+        </div>
+        <div class="border-t border-gray-200 px-4 py-5 sm:p-6">
+            <p class="mb-4">This assessment consists of three parts:</p>
+            <ul class="list-disc pl-5 space-y-2 mb-8 text-gray-600">
+                <li><strong>Interests:</strong> What do you enjoy doing?</li>
+                <li><strong>Skills:</strong> What are you good at?</li>
+                <li><strong>Scenarios:</strong> How would you handle real-world situations?</li>
+            </ul>
+
+            <a href="{% url 'assessment_setup' %}"
+                class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                Start Assessment
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
